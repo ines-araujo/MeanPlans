@@ -1,0 +1,164 @@
+<%- include('includes/beginning.ejs', {title: title}) %>
+<link rel="stylesheet" type="text/css" href="../../public/css/add-recipe.css">
+<%- include('includes/navbar.ejs') %>
+
+<div style="padding: 30px"></div>
+
+    <form action="<% if(editing) { %><%= '/save-edited-recipe/' %><%= recipe.id %><% } else { %><%= '/save-recipe' %><% } %>" method="POST">
+
+        <% if(editing) { %>
+            <h1>Edit Recipe</h1>
+        <% } else { %>
+            <h1>New Recipe</h1>
+        <% } %>
+
+        <!-- Recipe URL -->
+        <div><label for="recipeUrl">Recipe URL:</label></div>
+        <input type="url" id="recipe-url" name="recipeUrl" value="<% if(editing) { %><%= recipe.url %><% } %>">
+
+        <!-- Auto fill Button-->
+        <div style="width:100%; align-content:center; display:flex">
+            <button type="button" id="auto-fill">Auto fill Recipe</button>
+        </div>
+
+        <br><br>
+
+        <!-- Recipe Name -->
+        <div><label for="recipe-name">Recipe Name:</label></div>
+        <input type="text" id="recipe-name" name="recipeName" maxlength="50" value="<% if(editing) { %><%= recipe.name %><% } %>" required><br><br>
+
+        <!-- Recipe Image -->
+        <div><label for="recipe-image">Recipe Image (URL):</label></div>
+        <input type="text" id="image-url" name="imageUrl" placeholder="Enter Image URL" class="image-input" value="<% if(editing) { %><%= recipe.imageURL %><% } %>">
+        <!--<input type="file" id="image-file" name="imageFile" accept="image/*" style="display:none" class="image-input" value="<% if(editing) { %><%= recipe.imagePath %><% } %>">
+        <div>
+            <button type="button" id="toggle-input">Image File</button>
+        </div>-->
+        <!-- MzSQL does not support BLOB -->
+        
+        <br><br>
+
+        <!-- Servings -->
+        <div><label for="servings">Servings:</label></div>
+        <input type="number" id="servings" name="servings" min="1" value="<% if(editing) { %><%= recipe.servings %><% } %>" required><br><br>
+
+        <!-- Ingredients (variable number) -->
+        <div style="padding-bottom:20px">
+            <label>Ingredients:</label>
+            <ul id="ingredients-list">
+
+                <% if(!editing) { %>
+                    <li class="draggable">
+                        <input draggable="true" type="text" name="ingredient[]" value="<% if(editing && recipe.ingredients) { %><%= ingredients[0].name %><% } %>" required>
+                        <input type="number" name="quantity[]" step="0.01" min="0.01" value="<% if(editing && recipe.ingredients) { %><%= ingredients[0].amount %><% } %>" required>
+                        <select name="unit[]">
+                            <option value="unit">unit</option>
+                            <option value="miligrams">mg</option>
+                            <option value="g">g</option>
+                            <option value="kg">kg</option>
+                            <option value="oz">oz</option>
+                            <option value="l">l</option>
+                            <option value="ml">ml</option>
+                            <option value="dl">dl</option>
+                            <option value="cl">cl</option>
+                            <option value="cup" >cup</option>
+                            <option value="tbsp">tbsp</option>
+                            <option value="tsp">tsp</option>
+                            <option value="pinch">pinch</option>
+                            <option value="slice">slice</option>
+                        </select>
+                        <div style="padding-left:60px"></div>
+                    </li>
+                <% } else { %>
+                    <% if (recipe.ingredients && ingredients.length > 0) { %>
+                        <% for (let ingredient of ingredients){ %>
+
+                            <li class="draggable">
+                                <input draggable="true" type="text" name="ingredient[]" value="<%= ingredient.name %>" required>
+                                <input type="number" name="quantity[]" step="0.01" min="0.01" value="<%= ingredient.amount %>" required>
+                                <select name="unit[]">
+                                    <option value="unit" <%= ingredient.unit == 'unit' ? 'selected' : ''%> >unit</option>
+                                    <option value="miligrams" <%= ingredient.unit == 'miligrams' ? 'selected' : ''%>  >mg</option>
+                                    <option value="grams" <%= ingredient.unit == 'grams' ? 'selected' : ''%>>g</option>
+                                    <option value="kilograms" <%= ingredient.unit == 'kilograms' ? 'selected' : ''%>>kg</option>
+                                    <option value="ounces" <%= ingredient.unit == 'ounces' ? 'selected' : ''%>>oz</option>
+                                    <option value="liters" <%= ingredient.unit == 'liters' ? 'selected' : ''%>>l</option>
+                                    <option value="mililiters" <%= ingredient.unit == 'mililiters' ? 'selected' : ''%>>ml</option>
+                                    <option value="deciliters" <%= ingredient.unit == 'deciliters' ? 'selected' : ''%>>dl</option>
+                                    <option value="centiliters" <%= ingredient.unit == 'centiliters' ? 'selected' : ''%>>cl</option>
+                                    <option value="cups" <%= ingredient.unit == 'cups' ? 'selected' : ''%>>cup</option>
+                                    <option value="tablespoon" <%= ingredient.unit == 'tablespoon' ? 'selected' : ''%>>tbsp</option>
+                                    <option value="teaspoon" <%= ingredient.unit == 'teaspoon' ? 'selected' : ''%>>tsp</option>
+                                    <option value="pinch" <%= ingredient.unit == 'pinch' ? 'selected' : ''%>>pinch</option>
+                                    <option value="slice" <%= ingredient.unit == 'slice' ? 'selected' : ''%>>slice</option>
+                                </select>
+                                <div style="padding-left:60px"></div>
+                            </li>
+
+                        <% } %>
+                    <% } %>
+                <% } %>
+
+            </ul>
+            <button type="button" id="add-ingredient">Add Ingredient</button>
+        </div>
+
+        <!-- Steps (variable number) -->
+        <div style="padding-bottom:20px">
+            <label>Steps:</label>
+            <ol id="steps-list">
+                <% if(!editing) { %>
+                    <li><textarea type="text" name="step[]"></textarea> <div style="padding-left:60px"></div></li>
+                <% } else { %>
+                    <% if (recipe.steps && steps.length > 0) { %>
+                        <% for (let step of steps){ %>
+    
+                            <li><textarea type="text" name="step[]"><%= step %></textarea> <div style="padding-left:60px"></div></li>
+    
+                        <% } %>
+                    <% } %>
+                <% } %>
+            </ol>
+
+            <button type="button" id="add-step">Add Step</button>
+        </div>
+
+        <!-- Recipe Macros -->
+
+        <h2>Macros per serving</h2>
+        <div>
+            <label for="kcals">kcals:</label>
+            <input type="number" id="kcals" name="kcals" step="1" min="0" max="10000" value="<% if(editing) { %><%= recipe.kcals %><% } else { %><%= '0.0' %><% } %>">
+        </div>
+        <div>
+            <label for="grams-carbs">Carbs:</label>
+            <input type="number" id="grams-carbs" name="carbs" step="0.001" min="0" max="1000" value="<% if(editing) { %><%= recipe.carbs %><% } else { %><%= '0.0' %><% } %>">
+        </div>
+        <div>
+            <label for="grams-protein">Protein:</label>
+            <input type="number" id="grams-protein" name="protein" step="0.001" min="0" max="1000" value="<% if(editing) { %><%= recipe.protein %><% } else { %><%= '0.0' %><% } %>">
+        </div>
+        <div
+            ><label for="grams-fat">Fat:</label>
+            <input type="number" id="grams-fat" name="fat" step="0.001" min="0" max="1000" value="<% if(editing) { %><%= recipe.fat %><% } else { %><%= '0.0' %><% } %>">
+        </div>
+
+        <!-- Auto fill Button-->
+        <div style="width:100%; align-content:center; display:flex">
+            <button type="button" id="auto-macros">Auto fill macros</button>
+        </div>
+
+        <br><br>
+
+        <!-- Submit Button -->
+        <div style="width:100%; align-content:center; display:flex">
+            <button type="submit">Finish</button>
+        </div>
+
+    </form>
+
+    <div style="padding: 30px"></div>
+
+    <script src="../public/js/add-recipe.js"></script>
+
+<%- include('includes/end.ejs') %>

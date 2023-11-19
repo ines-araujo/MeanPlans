@@ -1,0 +1,40 @@
+<%- include('includes/beginning.ejs', {title: title}) %>
+<link rel="stylesheet" type="text/css" href="../../public/css/menu_card.css">
+<%- include('includes/navbar.ejs') %>
+
+<div class="page">
+
+    <h1 class="page-el">Your menus</h1>
+
+    <div class="page-el grid">
+
+    <% if (menus.length > 0) { %>
+        <% for (let menu of menus){ %>
+            <!-- Menu Cards -->
+            <div class="card">
+                <a href="/weekly-view/<%= menu.id %>">
+                    <div class="card-content">
+                        <h2 class="menu-title"><%= menu.name %></h2>
+                        <div class="menu-macros">
+                            <p class="menu-description">kcals: <%= menu.kcals %></p>
+                            <p class="menu-description">carbs: <%= menu.carbs %></p>
+                            <p class="menu-description">protein: <%= menu.protein %></p>
+                            <p class="menu-description">fat: <%= menu.fat %></p>
+                        </div>
+                        
+                        <div class="btn-c">
+                            <div class="buttons">
+                                <a class="btn" href="/edit-menu/<%= menu.id %>">Edit</a>
+                                <a class="btn" href="/delete-menu/<%= menu.id %>">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <% } %>
+    <% } %>
+
+    </div>
+</div>
+
+<%- include('includes/end.ejs') %>

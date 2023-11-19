@@ -1,0 +1,136 @@
+body {
+    background-image: url('../images/pixelDishes1.png'); /* Replace with your banner image URL */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevent image repetition */
+    background-attachment: fixed; /* Make the background fixed */
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: rgb(255, 255, 255)fff;
+    margin-top: 20px;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+input[type="url"],
+input[type="text"],
+input[type="number"],
+input[type="file"],
+select,
+textarea {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif; /* Font!! */
+    resize: none;
+}
+
+select {
+    width: 100px;
+    background-color: #ececec;
+}
+
+ul, ol {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li,
+ol li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+button {
+    border-radius: 10px;
+    min-height: 30px;
+    align-self: center !important;
+}
+
+button[type="button"] {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#auto-fill {
+    align-self: center;
+    margin: auto !important;
+    background-color: #2e1503 !important;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#auto-macros {
+    background-color: #2e1503 !important;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button[type="submit"] {
+    align-self: center;
+    margin: auto !important;
+    background-color: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.delete {
+    margin-left: 10px;
+    margin-right: 20px;
+    background-color: #fff !important;
+    color: #656565 !important;
+    opacity: 50%;
+    rotate: 45deg;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.image-input {
+    min-height: 26px;
+}
+
+.white{
+    color: #ffffff !important;
+}
+
+#recipe-url {
+    background-color: #ececec;
+}

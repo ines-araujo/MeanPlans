@@ -1,0 +1,96 @@
+a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color:#3b3b3b;
+}
+
+.page {
+    padding: 70px;
+}
+
+.page-el h1 {
+    padding: 20px;
+}
+
+
+
+/* Grid Container Styles */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Set a minimum width for each card */
+    gap: 10px;
+}
+
+/* Card Container Styles */
+.card {
+    width: 300px;
+    border: 1px solid #e1e1e1;
+    background-color: #fefefe;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    cursor: pointer;
+}
+
+.wrapper {
+    width: 100%;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.wrapper img {
+    width: 100%;
+}
+
+.menu-macros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Card Content Styles */
+.card-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.menu-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.menu-description {
+    font-size: 14px;
+    color: #777;
+}
+
+.btn-c {
+    align-content: center;
+}
+
+.buttons {
+    align-content: center;
+    display: flex;
+    padding-top: 10px;
+    gap: 5px;
+}
+
+.btn {
+    max-width: 50%;
+    flex: 1;
+    padding: 5px;
+    background-color: #168d59;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #26de8e;
+}

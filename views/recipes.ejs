@@ -1,0 +1,45 @@
+<%- include('includes/beginning.ejs', {title: title}) %>
+<link rel="stylesheet" type="text/css" href="../../public/css/menu_card.css">
+<%- include('includes/navbar.ejs') %>
+
+<div class="page">
+
+    <h1 class="page-el">Your Recipes</h1>
+
+    <div class="page-el grid">
+
+        <% if (recipes.length > 0) { %>
+            <% for (let recipe of recipes){ %>
+                <!-- Menu Cards -->
+                <div>
+                    <a href="<%= recipe.url %>" target="_blank" rel="noopener noreferrer">
+                        <div class="card">
+                            <div class="wrapper">
+                                <img src="<%= recipe.imageURL %>" alt='recipe photo'>
+                            </div>
+                            <div class="card-content">
+                                <h2 class="menu-title"><%= recipe.name %></h2>
+                                
+                                <div class="btn-c">
+                                    <div class="buttons">
+                                        <a class="btn" href="/edit-recipe/<%= recipe.id %>">Edit</a>
+                                        <a class="btn" href="/delete-recipe/<%= recipe.id %>">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <% } %>
+        <% } %>
+
+    </div>
+</div>
+
+<script>
+    function openInNewTab(url) {
+        window.open(url, '_blank').focus();
+    }
+</script>
+
+<%- include('includes/end.ejs') %>

@@ -1,0 +1,177 @@
+<%- include('includes/beginning.ejs', {title: title}) %>
+<link rel="stylesheet" type="text/css" href="../../public/css/weekly.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<%- include('includes/navbar.ejs') %>
+
+<br><br> 
+
+<form action="<% if(editing) { %><%= '/save-edited-menu/' %><%= menu.id %><% } else { %><%= '/save-menu' %><% } %>" method="POST" id="form">
+
+    <input id="meals" type="hidden" value="<% if(editing) { %><%= menu.meals %><% } %>">
+    <input id="editing" type="hidden" value="<%= editing %>">
+    <input id="recipes" type="hidden" value="<% if(editing) { %><%= recipes %><% } %>">
+
+
+    <div class="top-wrapper">
+        <div>
+            <% if(editing) { %>
+                <h1>Edit Menu</h1>
+            <% } else { %>
+                <h1>New Menu</h1>
+            <% } %>
+    
+            <!-- Title input -->
+            <label for="menuTitle">Title:</label>
+            <div><input type="text" id="menu-title" name="menuTitle" maxlength="50" value="<% if(editing) { %><%= menu.name %><% } %>" required></div><br>
+
+        </div>
+
+        <div>
+            <div>
+                <label for="recipes-container">Recipes in this menu:</label>
+
+                <div class="recipe-btnz">
+                    <button id="add-new-recipe" class="add-recipe" type="button" onclick="openOverlay()">Add New Recipe</button>
+                </div>
+
+                <input type="hidden" name="recipes" id='recipeListInput' value="" >
+            </div>
+            
+            <div class="recipes-container" name="recipes-container">
+                <ul class="recipes" id="recipeList"></ul>
+            </div>
+        </div>
+
+    </div><br>
+
+    <div>
+            <!-- Weekly meals grid -->
+            <div class="meal-grid" id="mealGrid">
+                <!-- Days -->
+                <div></div>
+                <div class="day-label">MON</div>
+                <div class="day-label">TUE</div>
+                <div class="day-label">WED</div>
+                <div class="day-label">THU</div>
+                <div class="day-label">FRI</div>
+                <div class="day-label">SAT</div>
+                <div class="day-label">SUN</div>
+            </div>
+            <input type="hidden" name="monkcals" id="monkcalsInput" value="<% if(editing) { %><%= menu.monkcals %><% } else %><%= 0 %>">
+            <input type="hidden" name="tuekcals" id="tuekcalsInput" value="<% if(editing) { %><%= menu.tuekcals %><% } else %><%= 0 %>">
+            <input type="hidden" name="wedkcals" id="wedkcalsInput" value="<% if(editing) { %><%= menu.wedkcals %><% } else %><%= 0 %>">
+            <input type="hidden" name="thukcals" id="thukcalsInput" value="<% if(editing) { %><%= menu.thukcals %><% } else %><%= 0 %>">
+            <input type="hidden" name="frikcals" id="frikcalsInput" value="<% if(editing) { %><%= menu.frikcals %><% } else %><%= 0 %>">
+            <input type="hidden" name="satkcals" id="satkcalsInput" value="<% if(editing) { %><%= menu.satkcals %><% } else %><%= 0 %>">
+            <input type="hidden" name="sunkcals" id="sunkcalsInput" value="<% if(editing) { %><%= menu.sunkcals %><% } else %><%= 0 %>">
+    </div>
+
+    <br>
+
+    <div class="bottom-wrapper">
+        <canvas id="macrosChart" style="max-width:400px"></canvas>
+
+        <ul class="macros">
+            <li>Carbs: <span id="carbs">0</span>g.</li>
+            <input type="hidden" name="carbs" id="carbsInput" value="<% if(editing) { %><%= menu.carbs %><% } else %><%= 0 %>">
+            <br>
+            <li>Protein: <span id="protein">0</span>g.</li>
+            <input type="hidden" name="protein" id="proteinInput" value="<% if(editing) { %><%= menu.protein %><% } else %><%= 0 %>">
+            <br>
+            <li>Fat: <span id="fat">0</span>g.</li>
+            <input type="hidden" name="fat" id="fatInput" value="<% if(editing) { %><%= menu.fat %><% } else %><%= 0 %>">
+        </ul>
+    
+        <div class="shoppingList">
+
+            <div class="header">
+                <button type="button" class="icon" onclick="switchView()"></button>
+                <h2>Shopping List</h2>
+                <div>
+                    <input type="number" name="numberOfPeople" id="number_of_people" step="1" min="1" max="20" value="1" onchange="updateShoppingList()">
+                    <label for="numberOfPeople">people</label>
+                </div>
+            </div>
+
+
+            <ul id="shopping-list" class="shoppingListIngredients">
+            </ul>
+
+            <div id="week-shopping-list" class="shoppingListIngredients">
+                <h3>Monday</h3>
+                <ul id="mon-week-shopping-list" class="day-shoppingList shoppingListIngredients"></ul>
+                <h3>Tuesday</h3>
+                <ul id="tue-week-shopping-list" class="day-shoppingList shoppingListIngredients"></ul>
+                <h3>Wednesday</h3>
+                <ul id="wed-week-shopping-list" class="day-shoppingList shoppingListIngredients"></ul>
+                <h3>Thursday</h3>
+                <ul id="thu-week-shopping-list" class="day-shoppingList shoppingListIngredients"></ul>
+                <h3>Friday</h3>
+                <ul id="fri-week-shopping-list" class="day-shoppingList shoppingListIngredients"></ul>
+                <h3>Saturday</h3>
+                <ul id="sat-week-shopping-list" class="day-shoppingList shoppingListIngredients"></ul>
+                <h3>Sunday</h3>
+                <ul id="sun-week-shopping-list" class="day-shoppingList shoppingListIngredients"></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="save">
+        <button type="submit">Save</button>
+    </div>
+
+</form>
+
+<br><br>
+
+<div class="dark-overlay" id="dark-overlay"></div>
+
+<div class="overlay" id="overlay">
+    <div>
+        <button type="button" id="backToMainView" class="back-to-main-view" onclick="closeOverlay()">Back</button>
+    </div>
+    <div class="recipes-overview">
+        <div>
+            <h1>Recipes Currently In The Menu:</h1>
+
+            <div class="recipes-container-overlay">
+                <ul class="recipes" id="recipeListOverlay"></ul>
+            </div>
+            
+            <h1>Search Recipes</h1>
+
+            <div>
+                <form id="searchBar" class="searchBar">
+                    <input type="text" name="name" id="name" placeholder="Search By Name or Ingredients">
+                    <button type="button" id="search" class="search" onclick="searchWithFilters()">Search</button>
+                </form>
+            </div>
+
+            <div class="searchWrapper"><ul class="grid results" id="results"></ul></div>
+
+            <div>
+                <button id="prev" class="searchNav" onclick="seePrev()">Previous</button>
+                <button id="next" class="searchNav" onclick="seeNext()">Next</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<a href="https://www.flaticon.com/free-icons/calendar" title="calendar icons" style="display:none">Calendar icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/select-all" title="select all icons" style="display:none">Select all icons created by Komar Dews - Flaticon</a>
+
+<script src="../public/js/weekly/constants.js"></script>
+<script src="../public/js/weekly/recipe-list.js"></script>
+<script src="../public/js/weekly/schedule.js"></script>
+<script src="../public/js/weekly/macros.js"></script>
+<script src="../public/js/weekly/overlay.js"></script>
+<script src="../public/js/weekly/search.js"></script>
+<script src="../public/js/weekly/shoppingList.js"></script>
+<script src="../public/js/util/math.js"></script>
+
+
+<%- include('includes/end.ejs') %>

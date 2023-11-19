@@ -1,0 +1,44 @@
+body {
+    font-family: 'Montserrat', sans-serif; /* Font!! */
+    background-image: url('../images/questions.png'); /* Replace 'your-image-url.jpg' with the actual URL or path to your image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 10vh;
+    padding: 20vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.leaf {
+    position: absolute;
+    top: 200px;
+    left: 200px;
+}
+
+h1 {
+    color: #168536;
+    font-size: 100px;
+    margin: 0;
+}
+
+p {
+    font-size: 24px;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #256c9c;
+}
